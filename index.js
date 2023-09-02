@@ -1,18 +1,18 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const cors = require('cors'); // Importa el middleware CORS
 
 const app = express();
-const port = 5000; // Puedes cambiar el puerto si lo deseas
+const port = 5000;
 
 app.use(bodyParser.json());
 
-// Ruta para recibir los datos desde la aplicación Flutter
+// Configura CORS para permitir todas las solicitudes
+app.use(cors());
+
 app.post('/guardar_datos', (req, res) => {
-  const datos = req.body; // Los datos enviados desde Flutter estarán en req.body
-  
-  // Aquí puedes realizar acciones con los datos, como guardarlos en una base de datos
+  const datos = req.body;
   console.log(req.body);
-  // Envía una respuesta de confirmación
   res.json({ mensaje: 'Datos recibidos con éxito' });
 });
 
