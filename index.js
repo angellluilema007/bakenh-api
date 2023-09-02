@@ -1,9 +1,10 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors'); // Importa el middleware CORS
+require('dotenv').config();
 
 const app = express();
-const port = 5000;
+const port = process.env.PORT;
 
 app.use(bodyParser.json());
 
