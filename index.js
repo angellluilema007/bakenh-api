@@ -11,7 +11,7 @@ app.post('/guardar_datos', (req, res) => {
   const datos = req.body; // Los datos enviados desde Flutter estarán en req.body
   
   // Aquí puedes realizar acciones con los datos, como guardarlos en una base de datos
-  
+  console.log(req.body);
   // Envía una respuesta de confirmación
   res.json({ mensaje: 'Datos recibidos con éxito' });
 });
