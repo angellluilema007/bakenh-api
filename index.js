@@ -13,7 +13,7 @@ app.use(cors());
 
 app.post('/guardar_datos', (req, res) => {
   const datos = req.body;
-  console.log(req.body);
+  console.log(datos);
   res.json({ mensaje: 'Datos recibidos con éxito' });
 });
 
