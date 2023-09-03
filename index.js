@@ -21,6 +21,10 @@ app.use(cors());
 
 app.post('/guardar_datos', (req, res) => {
   const datos = req.body;
+
+  // Convierte latitud y longitud a números
+  const latitud = parseFloat(datos.latitud);
+  const longitud = parseFloat(datos.longitud);
   
   // Conecta a la base de datos PostgreSQL
   pool.connect((err, client, done) => {
@@ -31,9 +35,9 @@ app.post('/guardar_datos', (req, res) => {
     }
     
     // Realiza la inserción de datos en la base de datos
-    client.query('INSERT INTO ubicaciones (latitud, longitud) VALUES ($1, $2)', [datos.latitud, datos.longitud], (err, result) => {
+    client.query('INSERT INTO ubicaciones (latitud, longitud) VALUES ($1, $2)', [latitud, longitud], (err, result) => {
       done(); // Libera el cliente de la piscina de conexiones
-      console.log(datos.latitud +"-------"+ datos.longitud)
+      console.log(latitud +"-------"+ longitud)
       if (err) {
         console.error('Error al ejecutar la consulta:', err);
         res.status(500).json({ error: 'Error al ejecutar la consulta en la base de datos' });
