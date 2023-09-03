@@ -35,7 +35,7 @@ app.post('/guardar_datos', (req, res) => {
     }
     
     // Realiza la inserción de datos en la base de datos
-    client.query('INSERT INTO ubicaciones (latitud, longitud) VALUES ($1, $2)', [latitud, longitud], (err, result) => {
+    client.query('INSERT INTO ubicaciones2 (latitud, longitud) VALUES ($1, $2)', [latitud, longitud], (err, result) => {
       done(); // Libera el cliente de la piscina de conexiones
       console.log(latitud +"-------"+ longitud)
       if (err) {
