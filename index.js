@@ -1,20 +1,47 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const cors = require('cors'); // Importa el middleware CORS
+const cors = require('cors');
+const { Pool } = require('pg'); // Importa el módulo pg
 require('dotenv').config();
 
 const app = express();
 const port = process.env.PORT;
+const dbConfig = {
+  user: process.env.DB_USER,
+  host: process.env.DB_HOST,
+  database: process.env.DB_NAME,
+  password: process.env.DB_PASSWORD,
+  port: process.env.DB_PORT,
+};
+
+const pool = new Pool(dbConfig);
 
 app.use(bodyParser.json());
-
-// Configura CORS para permitir todas las solicitudes
 app.use(cors());
 
 app.post('/guardar_datos', (req, res) => {
   const datos = req.body;
-  console.log(datos);
-  res.json({ mensaje: 'Datos recibidos con éxito' });
+  
+  // Conecta a la base de datos PostgreSQL
+  pool.connect((err, client, done) => {
+    if (err) {
+      console.error('Error al conectar a la base de datos:', err);
+      res.status(500).json({ error: 'Error al conectar a la base de datos' });
+      return;
+    }
+    
+    // Realiza la inserción de datos en la base de datos
+    client.query('INSERT INTO nombre_de_tabla (campo1, campo2) VALUES ($1, $2)', [datos.campo1, datos.campo2], (err, result) => {
+      done(); // Libera el cliente de la piscina de conexiones
+      
+      if (err) {
+        console.error('Error al ejecutar la consulta:', err);
+        res.status(500).json({ error: 'Error al ejecutar la consulta en la base de datos' });
+      } else {
+        res.json({ mensaje: 'Datos recibidos y guardados con éxito' });
+      }
+    });
+  });
 });
 
 app.listen(port, () => {
